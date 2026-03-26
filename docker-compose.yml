@@ -1,14 +1,16 @@
 services:
   db:
     image: postgres:15-alpine
+    container_name: postgres_db
+    restart: always
     environment:
-      POSTGRES_USER: web_user
-      POSTGRES_PASSWORD: strongpswd
-      POSTGRES_DB: web_postgres
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U web_user -d web_postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 15s
       timeout: 10s
       retries: 5
@@ -19,10 +21,10 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DB_HOST: db
-      DB_USER: web_user
-      DB_PASSWORD: strongpswd
-      DB_NAME: web_postgres
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
       DB_PORT: 5432
     depends_on:
       db:
@@ -30,3 +32,4 @@ services:
 
 volumes:
   postgres_data:
+
