@@ -34,6 +34,6 @@ async def root(db: Session = Depends(get_db)):
     visit_count = db.execute(count_query).scalar()
     
     return Response(
-        content=f"Hello! I have been visited {visit_count} times\n",
+        content=f"Hello! I have been visited {visit_count} times\n test",
         media_type="text/plain"
     )
